@@ -1,10 +1,10 @@
-AclPlus
+h1. AclPlus
 
-Introduction
+h2. Introduction
 AclPlus aims to be a viable alternative to those who are not comfortable with
 CakePHPs built in AclComponent.
 
-Goals
+h2. Goals
  * Distributed as a Plugin.
  * Can be used for row-level as well as action-by-action access control.
  * When finding an ACO that is not logged in the ACO table add a new record to help
@@ -24,46 +24,39 @@ Goals
    in the AppHelper when checking a logged in user has access to a link before outputing
    to the view.
 
-Additional Information
+h2. Additional Information
  * PHP5
  * Should work with Cake1.2 but untested.
 
-Current Features
+h2. Current Features
  * Provides a single method to check if a user has access to the current controller/action combination.
  * Created a simple plugin bootstrap which in the future should be loaded in app/config/bootstrap.php,
    though not needed right now.
 
-Todo
+h2. Todo
 
-Issues
+h2. Issues
 
-Usage Example
+h2. Usage Example
 
-Very simple, all you need to do is once you have a Group/User loaded into the session then in
-your Controllers beforeFilter() method call AclPlus::check();
+h3. Using Authsome
 
-Using Authsome
-
-{{{
-class AppController extends Controller
+@class AppController extends Controller
 {
 
     public function beforeFilter() {
         $this->AclPlus->check('User', Authsome::get());
     }
 
-}
-}}}
+}@
 
-Using CakePHP Auth
+h3. Using CakePHP Auth
 
-{{{
-class AppController extends Controller
+@class AppController extends Controller
 {
 
     public function beforeFilter() {
         $this->AclPlus->check('User', $this->Auth->user('id'));
     }
 
-}
-}}}
+}@

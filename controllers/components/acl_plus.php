@@ -1,27 +1,67 @@
 <?php
+/**
+ * AclPlus aims to be a viable alternative to those who are not comfortable with
+ * CakePHPs built in AclComponent.
+ *
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010, Richard Vanbergen.
+ * @version 0.1
+ * @author Richard Vanbergen <rich97@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ */
 class AclPlusComponent extends Object
 {
 
+/**
+ * Needs session component
+ */
     public $components = array(
         'Session'
     );
 
+/**
+ * Default session key
+ */
     public $sessionKey = 'AclPlus';
 
+/**
+ * The current requester, used to locate the Aros and parents of those Aros
+ */
     public $requester = array('model' => 'User', 'id' => 0);
 
+/**
+ * No used right now, will be used to set in which ways a developer wants to
+ * validate the current ARO
+ */
     public $validationTypes = array();
 
+/**
+ * Model names for Acos and Aros
+ */
     public $aroModel = 'Aro';
     public $acoModel = 'Aco';
     public $joinModel = 'ArosAco';
 
+/**
+ * Holds the current controller/action combination, can be set manually or
+ * loaded automagically.
+ */
     public $controllerAco = array('controller' => null, 'action' => null);
+
+/**
+ * Will be used for row-level access control
+ */
     public $modelAco = array('model' => 'models', 'id' => null);
 
-    private $__aros = array();
-    private $__acos = array();
+/**
+ * Holds a list of initalized model objects
+ */
+    private $__aclModels = array();
 
+/**
+ * Load settings passed to the component, and set up the models
+ */
     public function initialize(&$controller, $settings = array())
     {
 
@@ -41,6 +81,9 @@ class AclPlusComponent extends Object
 
     }
 
+/**
+ * Does a simple check to see if the ARO has access to and ACO (currently an action)
+ */
     public function check($model = 'User', $id = 0)
     {
 
@@ -64,34 +107,14 @@ class AclPlusComponent extends Object
         //get a list of Ids that match the current request
         $acos = $this->__buildAcos();
 
-        //Find the links
+        //Find the relationships
         return $this->__joinCheck($aros, $acos);
 
     }
 
-    private function __joinCheck($aros = array(), $acos = array())
-    {
-
-        if (!$acos || !$aros) {
-            return false;
-        }
-        $model = $this->__getModel('ArosAco');
-
-        foreach ($acos as $aco) {
-            $find = $model->find('count', array(
-                    'conditions' => array(
-                        $this->joinModel . '.aro_id' => $aros,
-                        $this->joinModel . '.aco_id' => $aco
-                    )
-                )
-            );
-            if ($find) {
-                return true;
-            }
-        }
-        
-    }
-
+/**
+ * Loads a Aro/Aco set from the session, attempts to build is there is none available.
+ */
     public function get($type = 'aros')
     {
 
@@ -103,6 +126,9 @@ class AclPlusComponent extends Object
 
     }
 
+/**
+ * Loads Aro/Acos into the session (this will probably change)
+ */
     public function rebuild($type)
     {
 
@@ -118,7 +144,27 @@ class AclPlusComponent extends Object
 
     }
 
-    //Allow basepath to be set somewhere
+/**
+ * Similar to Acl::allow()
+ */
+    public function allow($aro, $aco, $perms)
+    {
+
+    }
+
+/**
+ * Similar to Acl::deny()
+ */
+    public function deny($aro, $aco, $perms)
+    {
+
+    }
+
+/**
+ * Makes a path pointing the current Aco using what is set in $this->controllerAco
+ *
+ * Can either return an array to itterate over or a string path like controllers/controller/action
+ */
     private function __getActionPath($basePath = 'controllers', $return = 'array')
     {
 
@@ -127,10 +173,20 @@ class AclPlusComponent extends Object
         if ($return === 'array') {
             return array_reverse(explode('/', $path));
         }
-        return  $path;
+        return $path;
 
     }
 
+/**
+ * Builds a list of Aco ids that relate to the current action. Going from most relevant to
+ * least relevant for example:
+ *
+ * array(
+ *     0 => 15, // This action
+ *     1 => 14, // This controller
+ *     2 => 1, // All controllers
+ * );
+ */
     private function __buildAcos($id = null, $alias = null)
     {
 
@@ -193,6 +249,14 @@ class AclPlusComponent extends Object
 
     }
 
+/**
+ * Build a list of Aro ids that the main Aro is a child node of.
+ * 
+ * array(
+ *     0 => 64, // Current logged in user
+ *     1 => 1 // Administrator
+ * );
+ */
     private function __buildAros($id = null)
     {
 
@@ -235,16 +299,41 @@ class AclPlusComponent extends Object
 
     }
 
-    public function allow($aro, $aco, $perms)
+/**
+ * Find where there is a link between an array of Aros and an array of Acos
+ *
+ * Acos are looked up in order, if the a link between the current user
+ * and current action cannot be found then we look for the link between
+ * the current user and the current controller, all the way up the tree
+ */
+    private function __joinCheck($aros = array(), $acos = array())
     {
 
+        if (!$acos || !$aros) {
+            return false;
+        }
+        $model = $this->__getModel('ArosAco');
+
+        foreach ($acos as $aco) {
+            $find = $model->find('count', array(
+                    'conditions' => array(
+                        $this->joinModel . '.aro_id' => $aros,
+                        $this->joinModel . '.aco_id' => $aco
+                    )
+                )
+            );
+            if ($find) {
+                return true;
+            }
+        }
+
+        return false;
+        
     }
 
-    public function deny($aro, $aco, $perms)
-    {
-
-    }
-
+/**
+ * Returns a model once it has been loaded.
+ */
     private function __getModel($name, $alias = null)
     {
 

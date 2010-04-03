@@ -1,4 +1,0 @@
-<?php
-class AclPlusAppModel extends AppModel
-{}
-?>

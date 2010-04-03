@@ -38,17 +38,28 @@ CakeAcl can't do without a lot of hacking. ;)
  * Lots
 
 ## Issues
- * Lots
+ * No CRUD mode.
+ * Cannot give tables different names.
+ * Many, many more.
 
-## Usage Example
+## Simple Usage Example
 
 ### Using Authsome
 
     class AppController extends Controller
     {
 
+        public $components = array(
+            'AclPlus.Authsome',
+            'AclPlus.AclPlus',
+            'Session'
+        );
+
         public function beforeFilter() {
-            $this->AclPlus->check('User', Authsome::get());
+            if(!$this->AclPlus->check('User', Authsome::get())) {
+                $this->Session->setFlash('No access');
+                $this->redirect(array('controller' => 'dashboards'));
+            }
         }
 
     }
@@ -58,8 +69,18 @@ CakeAcl can't do without a lot of hacking. ;)
     class AppController extends Controller
     {
 
+        public $components = array(
+            'AclPlus.AclPlus',
+            'Auth',
+            'Session'
+        );
+
+
         public function beforeFilter() {
-            $this->AclPlus->check('User', $this->Auth->user('id'));
+            if ($this->AclPlus->check('User', $this->Auth->user('id'))) {
+                $this->Session->setFlash('No access');
+                $this->redirect(array('controller' => 'dashboards'));
+            }
         }
 
     }

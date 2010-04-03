@@ -2,7 +2,8 @@
 
 ## Introduction
 AclPlus aims to be a viable alternative to those who are not comfortable with
-CakePHPs built in AclComponent.
+CakePHPs built in AclComponent. And who knows, I may even throw a couple of things
+CakeAcl can't do without a lot of hacking. ;)
 
 ## Goals
  * Distributed as a Plugin.

@@ -29,8 +29,9 @@ Additional Information
  * Should work with Cake1.2 but untested.
 
 Current Features
-Very little, provides a single method to check if a user has access to the current controller/action
-combination.
+ * Provides a single method to check if a user has access to the current controller/action combination.
+ * Created a simple plugin bootstrap which in the future should be loaded in app/config/bootstrap.php,
+   though not needed right now.
 
 Todo
 

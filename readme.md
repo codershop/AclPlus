@@ -34,8 +34,10 @@ CakePHPs built in AclComponent.
    though not needed right now.
 
 ## Todo
+ * Lots
 
 ## Issues
+ * Lots
 
 ## Usage Example
 
@@ -43,18 +45,18 @@ CakePHPs built in AclComponent.
 
     class AppController extends Controller
     {
-    
+
         public function beforeFilter() {
             $this->AclPlus->check('User', Authsome::get());
         }
-    
+
     }
 
 ### Using CakePHP Auth
 
     class AppController extends Controller
     {
-    
+
         public function beforeFilter() {
             $this->AclPlus->check('User', $this->Auth->user('id'));
         }

@@ -3,7 +3,9 @@
 ## Introduction
 AclPlus aims to be a viable alternative to those who are not comfortable with
 CakePHPs built in AclComponent. And who knows, I may even throw a couple of things
-CakeAcl can't do without a lot of hacking. ;)
+CakeAcl can't do without a lot of hacking.
+
+As clarification: I have forked "SuperCakeAuth" and is in my public repositories list, to avoid confusion, "SuperCakeAuth" is _much_ closer in syntax and methodology to the current official CakePHP Auth/Acl. I'm writing this because I believe I can produce a simpler and more efficient way of doing this, I might be wrong but we will see. :)
 
 ## Goals
  * Distributed as a Plugin.

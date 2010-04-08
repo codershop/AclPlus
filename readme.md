@@ -6,8 +6,8 @@ CakePHPs built in AclComponent. And who knows, I may even throw a couple of thin
 CakeAcl can't do without a lot of hacking. ;)
 
 ## Goals
- * -Distributed as a Plugin.- (Done)
- * Unit tested.
+ * Distributed as a Plugin.
+ * Fully unit tested.
  * Can be used for row-level as well as action-by-action access control.
  * When finding an ACO that is not logged in the ACO table add a new record to help
    maintain the ACO table.
@@ -32,6 +32,7 @@ CakeAcl can't do without a lot of hacking. ;)
 
 ## Current Features
  * Provides a single method to check if a user has access to the current controller/action combination.
+ * Can map actions to a CRUD operation.
  * Created a simple plugin bootstrap which in the future should be loaded in app/config/bootstrap.php,
    though not needed right now.
 

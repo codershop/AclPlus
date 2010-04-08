@@ -55,6 +55,16 @@ class AclPlusComponent extends Object
     public $modelAco = array('model' => 'models', 'id' => null);
 
 /**
+ * Maps actions to a particular crud operation.
+ */
+    public $actionMaps = array(
+        'index' => 'read', 'view' => 'read',
+        'add' => 'create',
+        'edit' => 'update',
+        'delete' => 'delete'
+    );
+
+/**
  * Holds a list of initalized model objects
  */
     private $__aclModels = array();
@@ -192,7 +202,6 @@ class AclPlusComponent extends Object
 
         $paths = $this->__getActionPath();
         $model = $this->__getModel('Aco');
-        //action maps DONT FORGET ABOUT ACTION MAPS
 
         if (!is_null($id) && !is_null($alias)) {
             $found = $model->find('first', array(
@@ -314,14 +323,21 @@ class AclPlusComponent extends Object
         }
         $model = $this->__getModel('ArosAco');
 
+        $type = 'read';
+        if (!empty($this->actionMaps[$this->controllerAco['action']])) {
+            $type = $this->actionMaps[$this->controllerAco['action']];
+        }
+
         foreach ($acos as $aco) {
-            $find = $model->find('count', array(
+            $find = $model->find('all', array(
                     'conditions' => array(
                         $this->joinModel . '.aro_id' => $aros,
-                        $this->joinModel . '.aco_id' => $aco
+                        $this->joinModel . '.aco_id' => $aco,
+                        $this->joinModel . '._' . $type => 1
                     )
                 )
             );
+            debug($find);
             if ($find) {
                 return true;
             }

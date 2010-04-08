@@ -337,7 +337,6 @@ class AclPlusComponent extends Object
                     )
                 )
             );
-            debug($find);
             if ($find) {
                 return true;
             }

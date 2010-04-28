@@ -33,20 +33,14 @@ CakeAcl can't do without a lot of hacking. ;)
 ## Current Features
  * Provides a single method to check if a user has access to the current controller/action combination.
  * Can map actions to a CRUD operation.
- * Created a simple plugin bootstrap which in the future should be loaded in app/config/bootstrap.php,
-   though not needed right now.
-
-## Todo
- * Lots
 
 ## Issues
- * No CRUD mode.
  * Cannot give tables different names.
  * Many, many more.
 
 ## Simple Usage Example
 
-## Development notes
+### Usage notes
  * CRUD may not function correctly for models if you do not explicity map the current action to a crud
    operation in AclPlusComponent::$actionMaps. If the component has not been given a CRUD operation
    to map the current action to it will default to "read". This may not be a problem for checking
